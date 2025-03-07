@@ -1,6 +1,6 @@
 package com.productmanagement.controller;
 
-import com.productmanagement.model.DatabaseManager;
+import com.productmanagement.dao.ProductDAO;
 import com.productmanagement.model.Product;
 import com.productmanagement.view.ProductView;
 
@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ProductController {
-    private DatabaseManager db;
+    private ProductDAO db;
     private ProductView view;
     private int rowsPerPage = 5; // Default rows per page
     private int currentPage = 1;
 
-    public ProductController(DatabaseManager db, ProductView view) {
+    public ProductController(ProductDAO db, ProductView view) {
         this.db = db;
         this.view = view;
     }

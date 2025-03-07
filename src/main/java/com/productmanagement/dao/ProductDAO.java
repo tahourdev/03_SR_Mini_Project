@@ -1,17 +1,35 @@
-package com.productmanagement.model;
+package com.productmanagement.dao;
 
+import com.productmanagement.model.Product;
+
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
-public class DatabaseManager {
+public class ProductDAO {
     private Connection conn;
 
-    public DatabaseManager() throws SQLException {
-        String url = "jdbc:postgresql://localhost:5432/stock_db";
-        String user = "enghour";
-        String password = "Tahour@202023";
-        conn = DriverManager.getConnection(url, user, password);
+    public ProductDAO() throws SQLException {
+        Properties props = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties")) {
+            if (input == null) {
+                throw new SQLException("Unable to find db.properties in resources");
+            }
+            props.load(input);
+            String url = props.getProperty("db.url");
+            String user = props.getProperty("db.user");
+            String password = props.getProperty("db.password");
+            conn = DriverManager.getConnection(url, user, password);
+        } catch (Exception e) {
+            throw new SQLException("Failed to connect to database: " + e.getMessage(), e);
+        }
+    }
+
+    // Getter for the connection (if needed by other methods)
+    public Connection getConnection() {
+        return conn;
     }
 
     // Fetch products with pagination

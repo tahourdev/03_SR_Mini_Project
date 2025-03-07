@@ -1,7 +1,7 @@
 package com.productmanagement;
 
 import com.productmanagement.controller.ProductController;
-import com.productmanagement.model.DatabaseManager;
+import com.productmanagement.dao.ProductDAO;
 import com.productmanagement.view.MenuView;
 import com.productmanagement.view.ProductView;
 
@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         try {
-            DatabaseManager db = new DatabaseManager();
+            ProductDAO db = new ProductDAO();
             ProductView view = new ProductView();
             ProductController controller = new ProductController(db, view);
             MenuView menu = new MenuView();
