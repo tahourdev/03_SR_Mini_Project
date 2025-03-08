@@ -9,12 +9,16 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProductView {
-    private int pageSize = 2;
+    private int pageSize = 4;
+    private int totalPages = 0;
+
     private List<Product> writeProducts;
 
     public void displayAllProducts(List<Product> products, ProductController controller) {
         int currentPage = 1;
-        int totalPages = (int) Math.ceil((double) products.size() / pageSize);
+
+        totalPages = (int) Math.ceil((double) products.size() / pageSize);
+
         while (true) {
             displayMenuPage(products, currentPage, totalPages);
             Utility.optionMenu();
@@ -63,8 +67,11 @@ public class ProductView {
                 case "d" ->{}
                 case "s" ->{}
                 case "se" ->{
-
+                    System.out.print("Please input number row per page: ");
+                    pageSize = Integer.parseInt(Utility.scanner.nextLine());
+                    totalPages = (int) Math.ceil((double) products.size() / pageSize);
                 }
+
                 case "sa" ->{}
                 case "un" ->{}
                 case "ba" ->{}
