@@ -10,4 +10,6 @@ public interface ProductModel {
     void deleteProductById(int id);
     int addProduct(Product product);
     void updateProduct(Product product);
+    Integer getPageSize();
+    void setPageSize(int pageSize);
 }

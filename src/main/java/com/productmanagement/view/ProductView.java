@@ -11,13 +11,17 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProductView {
-    private int pageSize = 4;
-    private int totalPages = 0;
+    private int pageSize = 3;
 
     private List<Product> writeProductsList = new ArrayList<>();
     private List<Product> updatedProductsList = new ArrayList<>();
 
     public void displayAllProducts(List<Product> products, ProductController controller) {
+        Integer dbPageSize = controller.getPageSize();
+        if (dbPageSize != null) {
+            pageSize = dbPageSize;
+        }
+
         int currentPage = 1;
         int totalPages = (int) Math.ceil((double) products.size() / pageSize);
         while (true) {
@@ -162,9 +166,9 @@ public class ProductView {
                     }
                 }
                 case "se" ->{
-                    System.out.print("Please input number row per page: ");
-                    pageSize = Integer.parseInt(Utility.scanner.nextLine());
+                    pageSize = Integer.parseInt(Utility.validation("^\\d+$", "Please input number row per page: ", "Only positive number is accepted!!!"));
                     totalPages = (int) Math.ceil((double) products.size() / pageSize);
+                    controller.setPageSize(pageSize);
                 }
                 case "s" ->{
                     String getName = Utility.validation("^\\s*\\w*$", "Please input a name: ", "Only letters are accepted!!!");

@@ -1,14 +1,11 @@
 package com.productmanagement.controller;
 
-import com.productmanagement.model.ProductDAO;
 import com.productmanagement.model.Product;
 import com.productmanagement.model.ProductModel;
 import com.productmanagement.model.ProductModelImplementation;
 import com.productmanagement.view.ProductView;
 import com.productmanagement.view.Utility;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductController {
@@ -49,16 +46,21 @@ public class ProductController {
 
    public void deleteProductById(int id){
         model.deleteProductById(id);
-    }
+   }
 
-
-
-
-    public void saveProduct(List<Product> list) {
+   public void saveProduct(List<Product> list) {
         list.forEach(product -> model.addProduct(product));
-    }
+   }
 
-    public void updateProduct(List<Product> list) {
+   public void updateProduct(List<Product> list) {
         list.forEach(product -> model.updateProduct(product));
-    }
+   }
+
+   public Integer getPageSize(){
+        return model.getPageSize();
+   }
+
+   public void setPageSize(Integer pageSize){
+        model.setPageSize(pageSize);
+   }
 }

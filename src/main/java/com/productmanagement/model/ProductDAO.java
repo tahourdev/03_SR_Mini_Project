@@ -1,7 +1,5 @@
 package com.productmanagement.model;
 
-import org.postgresql.util.PSQLException;
-
 import com.productmanagement.view.Utility;
 
 import java.sql.*;
@@ -117,7 +115,7 @@ public class ProductDAO {
             pStatement.setString(1, product.getName());
             pStatement.setDouble(2, product.getUnitPrice());
             pStatement.setInt(3, product.getQuantity());
-            pStatement.setDate(4, Date.valueOf(product.getImportedDate()));
+            pStatement.setDate(4, java.sql.Date.valueOf(product.getImportedDate()));
             int isInserted = pStatement.executeUpdate();
             if(isInserted != 0){
                 System.out.println(Utility.CHECK_MARK + Utility.GREEN +" Product with ID: " + product.getId() + " was added to the database successfully!!!" + Utility.RESET_TEXT_COLOUR);
@@ -162,6 +160,30 @@ public class ProductDAO {
             pStatement.close();
             connection.close();
         }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public Integer getPageSize(){
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            ResultSet rs = connection.createStatement().executeQuery("SELECT value FROM config WHERE id = 1");
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public void setPageSize(int pageSize){
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            PreparedStatement pStatement = connection.prepareStatement("UPDATE config SET value = ? WHERE id = 1");
+            pStatement.setInt(1, pageSize);
+            pStatement.executeUpdate();
+        }catch (SQLException e){
             System.out.println(e.getMessage());
         }
     }
