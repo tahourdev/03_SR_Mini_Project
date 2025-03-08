@@ -75,4 +75,23 @@ public class ProductDAO {
         }
         return 0;
     }
+
+    public int addProduct(Product product){
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            String sql = "INSERT INTO products (name, unit_price, quantity, imported_date) VALUES (?, ?, ?, ?)";
+            PreparedStatement pStatement = connection.prepareStatement(sql);
+            pStatement.setString(1, product.getName());
+            pStatement.setDouble(2, product.getUnitPrice());
+            pStatement.setInt(3, product.getQuantity());
+            pStatement.setDate(4, product.getImportedDate());
+            int isInserted = pStatement.executeUpdate();
+            pStatement.close();
+            connection.close();
+            return isInserted;
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
 }

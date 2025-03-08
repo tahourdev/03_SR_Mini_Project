@@ -8,6 +8,3 @@ public class Main {
         controller.showAll(controller);
     }
 }
-
-
-//origin/design-console-ui
