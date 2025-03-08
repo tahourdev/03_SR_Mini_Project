@@ -6,4 +6,5 @@ public interface ProductModel {
     List<Product> getProductsFromDatabase();
     Product getProductById(int id);
     int getLatestId();
+    void deleteProductById(int id);
 }

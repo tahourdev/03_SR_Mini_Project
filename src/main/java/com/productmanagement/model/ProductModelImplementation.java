@@ -19,4 +19,9 @@ public class ProductModelImplementation implements ProductModel {
         return dao.getTheLatestIndexID();
     }
 
+    @Override
+    public void deleteProductById(int id) {
+        dao.deleteProduct(id);
+    }
+
 }

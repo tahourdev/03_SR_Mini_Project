@@ -36,4 +36,10 @@ public class ProductController {
     public int getId(){
         return model.getLatestId() + 1;
     }
+
+   public void deleteProductById(int id){
+        model.deleteProductById(id);
+    }
+
+
 }
