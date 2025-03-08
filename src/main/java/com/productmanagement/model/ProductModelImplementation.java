@@ -15,8 +15,28 @@ public class ProductModelImplementation implements ProductModel {
     }
 
     @Override
+    public List<Product>  getProductByName(String name) {
+        return dao.findByName(name);
+    }
+
+    @Override
     public int getLatestId() {
         return dao.getTheLatestIndexID();
+    }
+
+    @Override
+    public int addProduct(Product product) {
+        return dao.addProduct(product);
+    }
+
+    @Override
+    public void deleteProductById(int id) {
+        dao.deleteProduct(id);
+    }
+
+    @Override
+    public void updateProduct(Product product) {
+        dao.updateProduct(product);
     }
 
 }

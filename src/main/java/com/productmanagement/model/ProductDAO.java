@@ -2,8 +2,11 @@ package com.productmanagement.model;
 
 import com.productmanagement.view.Utility;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +29,7 @@ public class ProductDAO {
         try{
             connection = DriverManager.getConnection(url, user, password);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from products");
+            ResultSet resultSet = statement.executeQuery("select * from products order by id");
             while (resultSet.next()) {
                 products.add(new Product(
                         resultSet.getInt("id"),
@@ -69,6 +72,35 @@ public class ProductDAO {
         }
         return null;
     }
+
+    public List<Product>  findByName(String name){
+        String query = "select * from products where name ilike ?";
+        List<Product> products = new ArrayList<>();
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            PreparedStatement pStatement = connection.prepareStatement(query);
+            pStatement.setString(1, name.trim() + "%"); // Enable partial matching
+            ResultSet resultSet = pStatement.executeQuery();
+
+            while (resultSet.next()) {
+                products.add(new Product(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDouble("unit_price"),
+                        resultSet.getInt("quantity"),
+                        resultSet.getDate("imported_date").toLocalDate()
+                ));
+            }
+            resultSet.close();
+            pStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return products;
+    }
+
+
     public int getTheLatestIndexID(){
         try{
             connection = DriverManager.getConnection(url, user, password);
@@ -110,9 +142,9 @@ public class ProductDAO {
                     "-f", backUpFilePath,
                     "postgres"
             };
-            System.out.println("Executing command: " + String.join(" ", command));
             processBuilder.command(command);
-            Process process = processBuilder.start();
+            Process process;
+            process = processBuilder.start();
             int exitVal = process.waitFor();
             if (exitVal == 0) {
                 return "Back-up successful : " + backUpFileName;
@@ -122,52 +154,71 @@ public class ProductDAO {
         }catch (IOException | InterruptedException e) {
             return "Error during backup: " + e.getMessage();
         }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.err.println("Error closing connection: " + e.getMessage());
+                }
+            }
+        }
     }
-    public String restoreDatabase(int backupId)  {
+
+    public int addProduct(Product product){
         try{
-            File backupDir = new File("src/main/java/database/");
-            File[] backups = backupDir.listFiles((dir, name) -> name.endsWith(".sql"));
-            if(backups == null || backupId < 1  || backupId > backups.length){
-                return "Invalid backup ID";
+            connection = DriverManager.getConnection(url, user, password);
+            String sql = "INSERT INTO products (name, unit_price, quantity, imported_date) VALUES (?, ?, ?, ?)";
+            PreparedStatement pStatement = connection.prepareStatement(sql);
+            pStatement.setString(1, product.getName());
+            pStatement.setDouble(2, product.getUnitPrice());
+            pStatement.setInt(3, product.getQuantity());
+            pStatement.setDate(4, java.sql.Date.valueOf(product.getImportedDate()));
+            int isInserted = pStatement.executeUpdate();
+            if(isInserted != 0){
+                System.out.println(Utility.CHECK_MARK + Utility.GREEN +" Product with ID: " + product.getId() + " was added to the database successfully!!!" + Utility.RESET_TEXT_COLOUR);
             }
-
-            java.util.Arrays.sort(backups);
-            String backupFileName = backups[backupId - 1].getAbsolutePath();
-
-            ProcessBuilder processBuilder = new ProcessBuilder();
-            if (password != null && !password.isEmpty()) {
-                processBuilder.environment().put("PGPASSWORD", password);
-            }
-
-            String[] command;
-            if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-                command = new String[]{
-                        "cmd.exe","/c",
-                        "C:/Program Files/PostgreSQL/17/bin/psql.exe",
-                        "-U", user,
-                        "-d", "postgres",
-                        "-f", backupFileName
-                };
-            }else{
-                command = new String[]{
-                        "psql",
-                        "-U", user,
-                        "-d", "postgres",
-                        "-f", backupFileName
-                };
-            }
-            processBuilder.command(command);
-            processBuilder.redirectErrorStream(true);
-            Process process = processBuilder.start();
-            int exitVal = process.waitFor();
-            if (exitVal == 0) {
-                return "Restore successful from: " + backupFileName;
-            }else {
-                return "Restore failed";
-            }
-        }catch (IOException | InterruptedException e) {
+            pStatement.close();
+            connection.close();
+            return isInserted;
+        }catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return 0;
+    }
+
+    public void deleteProduct(int id){
+
+        String sql = "DELETE FROM products WHERE id = ?";
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            connection.close();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateProduct(Product product){
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            String sql = "UPDATE products SET name = ?, unit_price = ?, quantity = ?, imported_date = ? WHERE id = ?";
+            PreparedStatement pStatement = connection.prepareStatement(sql);
+            pStatement.setString(1, product.getName());
+            pStatement.setDouble(2, product.getUnitPrice());
+            pStatement.setInt(3, product.getQuantity());
+            pStatement.setDate(4, java.sql.Date.valueOf(product.getImportedDate()));
+            pStatement.setInt(5, product.getId());
+            int isInserted = pStatement.executeUpdate();
+            if(isInserted != 0){
+                System.out.println(Utility.CHECK_MARK + Utility.GREEN +" Product with ID: " + product.getId() + " was updated to the database successfully!!!" + Utility.RESET_TEXT_COLOUR);
+            }
+            pStatement.close();
+            connection.close();
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

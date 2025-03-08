@@ -1,4 +1,5 @@
 package com.productmanagement.model;
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Product {
@@ -48,7 +49,7 @@ public class Product {
         return importedDate;
     }
 
-    public void setImportedDate(LocalDate importedDate) {
+    public void setImportedDate() {
         this.importedDate = importedDate;
     }
 
