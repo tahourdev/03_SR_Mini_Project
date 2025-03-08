@@ -2,6 +2,8 @@ package com.productmanagement.model;
 
 import org.postgresql.util.PSQLException;
 
+import com.productmanagement.view.Utility;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,6 @@ public class ProductDAO {
     public ProductDAO() {
         connection = null;
     }
-
     public List<Product> getAllProducts(){
         List<Product> products = new ArrayList<>();
         try{
@@ -118,6 +119,9 @@ public class ProductDAO {
             pStatement.setInt(3, product.getQuantity());
             pStatement.setDate(4, Date.valueOf(product.getImportedDate()));
             int isInserted = pStatement.executeUpdate();
+            if(isInserted != 0){
+                System.out.println(Utility.CHECK_MARK + Utility.GREEN +" Product with ID: " + product.getId() + " was added to the database successfully!!!" + Utility.RESET_TEXT_COLOUR);
+            }
             pStatement.close();
             connection.close();
             return isInserted;
