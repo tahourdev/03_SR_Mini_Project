@@ -14,7 +14,8 @@ public class ProductView {
     private int pageSize = 4;
     private int totalPages = 0;
 
-    private List<Product> writeProductsList;
+    private List<Product> writeProductsList = new ArrayList<>();
+    private List<Product> updatedProductsList = new ArrayList<>();
 
     public void displayAllProducts(List<Product> products, ProductController controller) {
         int currentPage = 1;
@@ -64,7 +65,7 @@ public class ProductView {
                             break;
                         }
                     }
-                    double price = Double.parseDouble(Utility.validation("^\\s*\\d*$", "Enter Price : ", "Only positive number is accepted!!!"));
+                    double price = Double.parseDouble(Utility.validation("^\\s*\\d+(\\.\\d+)?$", "Enter Price : ", "Only positive number is accepted!!!"));
                     int quantity = Integer.parseInt(Utility.validation("^\\s*\\d*$", "Enter Quantity : ", "Only positive number is accepted!!!"));
                     writeProductsList.add(new Product(id, name, price, quantity, LocalDate.now()));
                     System.out.print(Utility.YELLOW + "Press Enter to Continue..." + Utility.RESET_TEXT_COLOUR);
@@ -73,8 +74,97 @@ public class ProductView {
                 case "r" ->{
                     String getId = Utility.validation("^\\s*\\d+$", "Please input id to get record : ", "Only positive number is accepted!!!");
                     controller.showProductById(Integer.parseInt(getId));
+                    System.out.print(Utility.YELLOW + "Press Enter to Continue..." + Utility.RESET_TEXT_COLOUR);
+                    Utility.scanner.nextLine();
                 }
-                case "u" ->{}
+                case "u" ->{
+                    String getId = Utility.validation("^\\s*\\d+$", "Please input id to update : ", "Only positive number is accepted!!!");
+                    Product product = controller.showProductById(Integer.parseInt(getId));
+                    if(product != null){
+                        System.out.println("1. Name\t2. Unit Price\t3. Qty\t4. All Field\t5. Exit");
+                        int selectedNum = Integer.parseInt(Utility.validation("^[1-5]$", "Choose an option to update : ", "Only accepted number between 1 to 5!!!"));
+                        switch (selectedNum) {
+                            case 1 ->{
+                                String newName;
+                                while (true){
+                                    System.out.print("Enter Product New Name : ");
+                                    newName = Utility.scanner.nextLine();
+                                    if(newName.trim().isEmpty()){
+                                        System.out.println(Utility.X_MARK + Utility.RED + " Empty space is not allow here!!!" + Utility.RESET_TEXT_COLOUR);
+                                    }else {
+                                        break;
+                                    }
+                                }
+                                if(updatedProductsList.isEmpty()){
+                                    updatedProductsList.add(new Product(Integer.parseInt(getId), newName, product.getUnitPrice(), product.getQuantity(), product.getImportedDate()));
+                                }else {
+                                    String finalNewName = newName;
+                                    updatedProductsList.stream()
+                                            .filter(item -> item.getId() == Integer.parseInt(getId))
+                                            .findFirst()
+                                            .ifPresentOrElse(item -> item.setName(finalNewName),()-> updatedProductsList.add(new Product(Integer.parseInt(getId), finalNewName, product.getUnitPrice(), product.getQuantity(), product.getImportedDate())));
+                                }
+                                System.out.print(Utility.YELLOW + "Press Enter to Continue..." + Utility.RESET_TEXT_COLOUR);
+                                Utility.scanner.nextLine();
+                            }
+                            case 2 ->{
+                                double newPrice = Double.parseDouble(Utility.validation("^\\s*\\d+(\\.\\d+)?$", "Enter New Price : ", "Only positive number is accepted!!!"));
+                                if(updatedProductsList.isEmpty()){
+                                    updatedProductsList.add(new Product(Integer.parseInt(getId), product.getName(), newPrice, product.getQuantity(), product.getImportedDate()));
+                                }else {
+                                    updatedProductsList.stream()
+                                            .filter(item -> item.getId() == Integer.parseInt(getId))
+                                            .findFirst()
+                                            .ifPresentOrElse(item -> item.setUnitPrice(newPrice),()-> updatedProductsList.add(new Product(Integer.parseInt(getId), product.getName(), newPrice, product.getQuantity(), product.getImportedDate())));
+                                }
+                                System.out.print(Utility.YELLOW + "Press Enter to Continue..." + Utility.RESET_TEXT_COLOUR);
+                                Utility.scanner.nextLine();
+                            }
+                            case 3 ->{
+                                int newQty = Integer.parseInt(Utility.validation("^\\s*\\d*$", "Enter New Qty : ", "Only positive number is accepted!!!"));
+                                if(updatedProductsList.isEmpty()){
+                                    updatedProductsList.add(new Product(Integer.parseInt(getId), product.getName(), product.getUnitPrice(), newQty, product.getImportedDate()));
+                                }else {
+                                    updatedProductsList.stream()
+                                            .filter(item -> item.getId() == Integer.parseInt(getId))
+                                            .findFirst()
+                                            .ifPresentOrElse(item -> item.setQuantity(newQty),()-> updatedProductsList.add(new Product(Integer.parseInt(getId), product.getName(), product.getUnitPrice(), newQty, product.getImportedDate())));
+                                }
+                                System.out.print(Utility.YELLOW + "Press Enter to Continue..." + Utility.RESET_TEXT_COLOUR);
+                                Utility.scanner.nextLine();
+                            }
+                            case 4 ->{
+                                String newName;
+                                while (true){
+                                    System.out.print("Enter Product New Name : ");
+                                    newName = Utility.scanner.nextLine();
+                                    if(newName.trim().isEmpty()){
+                                        System.out.println(Utility.X_MARK + Utility.RED + " Empty space is not allow here!!!" + Utility.RESET_TEXT_COLOUR);
+                                    }else {
+                                        break;
+                                    }
+                                }
+                                double newPrice = Double.parseDouble(Utility.validation("^\\s*\\d+(\\.\\d+)?$", "Enter New Price : ", "Only positive number is accepted!!!"));
+                                int newQty = Integer.parseInt(Utility.validation("^\\s*\\d*$", "Enter New Qty : ", "Only positive number is accepted!!!"));
+                                if(updatedProductsList.isEmpty()){
+                                    updatedProductsList.add(new Product(Integer.parseInt(getId), newName, newPrice, newQty, product.getImportedDate()));
+                                }else {
+                                    String finalNewName = newName;
+                                    updatedProductsList.stream()
+                                            .filter(item -> item.getId() == Integer.parseInt(getId))
+                                            .findFirst()
+                                            .ifPresentOrElse(item -> {
+                                                item.setName(finalNewName);
+                                                item.setUnitPrice(newPrice);
+                                                item.setQuantity(newQty);
+                                            },()-> updatedProductsList.add(new Product(Integer.parseInt(getId), finalNewName, newPrice, newQty, product.getImportedDate())));
+                                }
+                                System.out.print(Utility.YELLOW + "Press Enter to Continue..." + Utility.RESET_TEXT_COLOUR);
+                                Utility.scanner.nextLine();
+                            }
+                        }
+                    }
+                }
                 case "se" ->{
                     System.out.print("Please input number row per page: ");
                     pageSize = Integer.parseInt(Utility.scanner.nextLine());
@@ -101,10 +191,15 @@ public class ProductView {
                             }
                         }
                         case "su" ->{
-
-                        }
-                        case "b" ->{
-
+                            if(updatedProductsList.isEmpty()){
+                                System.out.println(Utility.YELLOW + Utility.WARNING_SIGHT + " There is no data to save here!!!" + Utility.RESET_TEXT_COLOUR);
+                                System.out.print(Utility.YELLOW + "Press Enter to Continue..." + Utility.RESET_TEXT_COLOUR);
+                                Utility.scanner.nextLine();
+                            }else{
+                                controller.updateProduct(updatedProductsList);
+                                updatedProductsList.clear();
+                                controller.showAll(controller);
+                            }
                         }
                     }
                 }
@@ -120,10 +215,11 @@ public class ProductView {
                             }
                         }
                         case "uu" ->{
-
-                        }
-                        case "b" ->{
-
+                            if(updatedProductsList.isEmpty()){
+                                Utility.isNullObject();
+                            }else {
+                                displayListProducts(updatedProductsList);
+                            }
                         }
                     }
                 }
@@ -170,8 +266,6 @@ public class ProductView {
         CellStyle style = new CellStyle(CellStyle.HorizontalAlign.CENTER);
         Utility.addCellIntoTable(product, table, style);
         System.out.println(table.render());
-        System.out.print(Utility.YELLOW + "Press Enter to Continue..." + Utility.RESET_TEXT_COLOUR);
-        Utility.scanner.nextLine();
     }
 
     public void displayListProducts(List<Product> list) {

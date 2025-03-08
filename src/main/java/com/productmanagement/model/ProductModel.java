@@ -9,4 +9,5 @@ public interface ProductModel {
     int getLatestId();
     void deleteProductById(int id);
     int addProduct(Product product);
+    void updateProduct(Product product);
 }

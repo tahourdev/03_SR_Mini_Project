@@ -34,4 +34,9 @@ public class ProductModelImplementation implements ProductModel {
         dao.deleteProduct(id);
     }
 
+    @Override
+    public void updateProduct(Product product) {
+        dao.updateProduct(product);
+    }
+
 }

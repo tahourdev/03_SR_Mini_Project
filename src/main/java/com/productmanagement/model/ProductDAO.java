@@ -22,7 +22,7 @@ public class ProductDAO {
         try{
             connection = DriverManager.getConnection(url, user, password);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from products");
+            ResultSet resultSet = statement.executeQuery("select * from products order by id");
             while (resultSet.next()) {
                 products.add(new Product(
                         resultSet.getInt("id"),
@@ -141,6 +141,27 @@ public class ProductDAO {
             statement.executeUpdate();
             connection.close();
         }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateProduct(Product product){
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            String sql = "UPDATE products SET name = ?, unit_price = ?, quantity = ?, imported_date = ? WHERE id = ?";
+            PreparedStatement pStatement = connection.prepareStatement(sql);
+            pStatement.setString(1, product.getName());
+            pStatement.setDouble(2, product.getUnitPrice());
+            pStatement.setInt(3, product.getQuantity());
+            pStatement.setDate(4, Date.valueOf(product.getImportedDate()));
+            pStatement.setInt(5, product.getId());
+            int isInserted = pStatement.executeUpdate();
+            if(isInserted != 0){
+                System.out.println(Utility.CHECK_MARK + Utility.GREEN +" Product with ID: " + product.getId() + " was updated to the database successfully!!!" + Utility.RESET_TEXT_COLOUR);
+            }
+            pStatement.close();
+            connection.close();
+        }catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
