@@ -24,12 +24,14 @@ public class ProductController {
         view.displayAllProducts(list, controller);
     }
 
-    public void showProductById(int id){
+    public Product showProductById(int id){
         Product product = model.getProductById(id);
         if(product != null){
             view.displayPage(product);
+            return product;
         }else {
             Utility.isNullObject();
+            return null;
         }
     }
 
@@ -38,8 +40,10 @@ public class ProductController {
     }
 
     public void saveProduct(List<Product> list) {
-        list.forEach(product -> {
-            model.addProduct(product);
-        });
+        list.forEach(product -> model.addProduct(product));
+    }
+
+    public void updateProduct(List<Product> list) {
+        list.forEach(product -> model.updateProduct(product));
     }
 }

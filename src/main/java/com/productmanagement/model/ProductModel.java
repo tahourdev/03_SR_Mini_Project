@@ -7,4 +7,5 @@ public interface ProductModel {
     Product getProductById(int id);
     int getLatestId();
     void addProduct(Product product);
+    void updateProduct(Product product);
 }

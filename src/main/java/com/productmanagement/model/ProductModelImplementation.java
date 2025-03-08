@@ -24,4 +24,9 @@ public class ProductModelImplementation implements ProductModel {
         dao.addProduct(product);
     }
 
+    @Override
+    public void updateProduct(Product product) {
+        dao.updateProduct(product);
+    }
+
 }
