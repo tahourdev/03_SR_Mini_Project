@@ -62,7 +62,9 @@ public class ProductView {
                 case "u" ->{}
                 case "d" ->{}
                 case "s" ->{}
-                case "se" ->{}
+                case "se" ->{
+
+                }
                 case "sa" ->{}
                 case "un" ->{}
                 case "ba" ->{}

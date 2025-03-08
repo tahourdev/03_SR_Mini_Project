@@ -9,7 +9,7 @@ public class ProductDAO {
     private Connection connection;
     private final String url = "jdbc:postgresql://localhost:5432/stock_db";
     private final String user = "postgres";
-    private final String password = "270540";
+    private final String password = "@Thavornn122";
     public ProductDAO() {
         connection = null;
     }
