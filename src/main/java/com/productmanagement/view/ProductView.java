@@ -43,10 +43,6 @@ public class ProductView {
                         System.out.println(Utility.RED + "Page number out of range!" + Utility.RESET_TEXT_COLOUR);
                     }
                 }
-                case "e" -> {
-                    System.out.println("\nExiting pagination...");
-                    return;
-                }
                 case "w" ->{
                     int id;
                     if(writeProductsList.isEmpty()){
@@ -239,6 +235,14 @@ public class ProductView {
                 }
                 case "ba" ->{}
                 case "re" ->{}
+                case "e" -> {
+                    System.out.println(Utility.GREEN + "===============================================");
+                    System.out.println("=     Thank You For Using This Program!!!     =");
+                    System.out.println("=               Break a Leg!!!                =");
+                    System.out.println("=                    \uD83D\uDE0A                       =");
+                    System.out.println("===============================================");
+                    return;
+                }
             }
         }
     }
