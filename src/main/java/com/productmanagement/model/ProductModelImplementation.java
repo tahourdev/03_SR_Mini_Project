@@ -25,8 +25,8 @@ public class ProductModelImplementation implements ProductModel {
     }
 
     @Override
-    public void addProduct(Product product) {
-        dao.addProduct(product);
+    public int addProduct(Product product) {
+        return dao.addProduct(product);
     }
 
     @Override
