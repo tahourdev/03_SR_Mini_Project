@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProductView {
-    private int pageSize = 2;
-    private List<Product> writeProductsList = new ArrayList<>();
+    private int pageSize = 4;
+    private int totalPages = 0;
+
+    private List<Product> writeProductsList;
 
     public void displayAllProducts(List<Product> products, ProductController controller) {
         int currentPage = 1;
@@ -72,14 +74,18 @@ public class ProductView {
                     String getId = Utility.validation("^\\s*\\d+$", "Please input id to get record : ", "Only positive number is accepted!!!");
                     controller.showProductById(Integer.parseInt(getId));
                 }
-                case "u" ->{
-                }
+                case "u" ->{}
                 case "d" ->{}
+                case "se" ->{
+                    System.out.print("Please input number row per page: ");
+                    pageSize = Integer.parseInt(Utility.scanner.nextLine());
+                    totalPages = (int) Math.ceil((double) products.size() / pageSize);
+                }
                 case "s" ->{
                     String getName = Utility.validation("^\\s*\\w*$", "Please input a name: ", "Only letters are accepted!!!");
                     controller.showProductByName(getName);
                 }
-                case "se" ->{}
+
                 case "sa" ->{
                     System.out.println(Utility.GREEN + "'si' " + Utility.RESET_TEXT_COLOUR + "for saving insert products and " + Utility.GREEN + "'su' " + Utility.RESET_TEXT_COLOUR + "for saving update products or " + Utility.RED + "'b' " + Utility.RESET_TEXT_COLOUR + "for back to menu.");
                     String option = Utility.validation("^\\s*|si|SI|Si|sI|su|SU|Su|sU|B|b$", "Enter your option : ", "Only those in the menu!!!").toLowerCase();
@@ -93,8 +99,12 @@ public class ProductView {
 
                             }
                         }
-                        case "su" ->{}
-                        case "b" ->{}
+                        case "su" ->{
+
+                        }
+                        case "b" ->{
+
+                        }
                     }
                 }
                 case "un" ->{
@@ -111,7 +121,9 @@ public class ProductView {
                         case "uu" ->{
 
                         }
-                        case "b" ->{}
+                        case "b" ->{
+
+                        }
                     }
                 }
                 case "ba" ->{}
