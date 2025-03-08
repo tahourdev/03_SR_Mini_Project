@@ -36,4 +36,6 @@ public class ProductController {
     public int getId(){
         return model.getLatestId() + 1;
     }
+
+
 }

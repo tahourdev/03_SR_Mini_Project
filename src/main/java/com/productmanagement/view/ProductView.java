@@ -76,7 +76,27 @@ public class ProductView {
                 case "d" ->{}
                 case "s" ->{}
                 case "se" ->{}
-                case "sa" ->{}
+                case "sa" ->{
+                    System.out.println(Utility.GREEN + "'si' " + Utility.RESET_TEXT_COLOUR + "for saving insert products and " + Utility.GREEN + "'su' " + Utility.RESET_TEXT_COLOUR + "for saving update products or " + Utility.RED + "'b' " + Utility.RESET_TEXT_COLOUR + "for back to menu.");
+                    String option = Utility.validation("^\\s*|si|SI|Si|sI|su|SU|Su|sU|B|b$", "Enter your option : ", "Only those in the menu!!!").toLowerCase();
+                    switch (option){
+                        case "si" ->{
+                            if(writeProductsList.isEmpty()){
+                                System.out.println(Utility.YELLOW + Utility.WARNING_SIGHT + " There is no data to save here!!!" + Utility.RESET_TEXT_COLOUR);
+                                System.out.print(Utility.YELLOW + "Press Enter to Continue..." + Utility.RESET_TEXT_COLOUR);
+                                Utility.scanner.nextLine();
+                            }else {
+
+                            }
+                        }
+                        case "su" ->{
+
+                        }
+                        case "b" ->{
+
+                        }
+                    }
+                }
                 case "un" ->{
                     System.out.println(Utility.GREEN + "'ui' " + Utility.RESET_TEXT_COLOUR + "for saving insert products and " + Utility.GREEN + "'uu' " + Utility.RESET_TEXT_COLOUR + "for saving update products or " + Utility.RED + "'b' " + Utility.RESET_TEXT_COLOUR + "for back to menu.");
                     String option = Utility.validation("^\\s*|ui|UI|Ui|uI|uu|UU|Uu|uU|B|b$", "Enter your option : ", "Only those in the menu!!!").toLowerCase();

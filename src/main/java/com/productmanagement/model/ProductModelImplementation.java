@@ -19,4 +19,9 @@ public class ProductModelImplementation implements ProductModel {
         return dao.getTheLatestIndexID();
     }
 
+    @Override
+    public int addProduct(Product product) {
+        return dao.addProduct(product);
+    }
+
 }
