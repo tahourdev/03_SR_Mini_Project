@@ -39,4 +39,13 @@ public class ProductModelImplementation implements ProductModel {
         dao.updateProduct(product);
     }
 
+    @Override
+    public Integer getPageSize() {
+        return dao.getPageSize();
+    }
+
+    @Override
+    public void setPageSize(int pageSize) {
+        dao.setPageSize(pageSize);
+    }
 }

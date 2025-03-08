@@ -221,4 +221,28 @@ public class ProductDAO {
             System.out.println(e.getMessage());
         }
     }
+
+    public Integer getPageSize(){
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            ResultSet rs = connection.createStatement().executeQuery("SELECT value FROM config WHERE id = 1");
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public void setPageSize(int pageSize){
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            PreparedStatement pStatement = connection.prepareStatement("UPDATE config SET value = ? WHERE id = 1");
+            pStatement.setInt(1, pageSize);
+            pStatement.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
 }
