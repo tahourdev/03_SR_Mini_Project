@@ -82,10 +82,6 @@ public class ProductView {
                     pageSize = Integer.parseInt(Utility.scanner.nextLine());
                     totalPages = (int) Math.ceil((double) products.size() / pageSize);
                 }
-
-                case "sa" ->{}
-                case "un" ->{}
-                case "se" ->{}
                 case "sa" ->{
                     System.out.println(Utility.GREEN + "'si' " + Utility.RESET_TEXT_COLOUR + "for saving insert products and " + Utility.GREEN + "'su' " + Utility.RESET_TEXT_COLOUR + "for saving update products or " + Utility.RED + "'b' " + Utility.RESET_TEXT_COLOUR + "for back to menu.");
                     String option = Utility.validation("^\\s*|si|SI|Si|sI|su|SU|Su|sU|B|b$", "Enter your option : ", "Only those in the menu!!!").toLowerCase();
