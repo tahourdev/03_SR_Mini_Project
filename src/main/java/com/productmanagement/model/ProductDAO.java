@@ -61,6 +61,34 @@ public class ProductDAO {
         }
         return null;
     }
+
+    public Product findByName(String name){
+        String query = "select * from products where name ilike ?";
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            PreparedStatement pStatement = connection.prepareStatement(query);
+            pStatement.setString(1, name.trim() + "%"); // Enable partial matching
+            ResultSet resultSet = pStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Product(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDouble("unit_price"),
+                        resultSet.getInt("quantity"),
+                        resultSet.getDate("imported_date").toLocalDate()
+                );
+            }
+            resultSet.close();
+            pStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+
     public int getTheLatestIndexID(){
         try{
             connection = DriverManager.getConnection(url, user, password);
@@ -84,7 +112,7 @@ public class ProductDAO {
             pStatement.setString(1, product.getName());
             pStatement.setDouble(2, product.getUnitPrice());
             pStatement.setInt(3, product.getQuantity());
-            pStatement.setDate(4, product.getImportedDate());
+            pStatement.setDate(4, Date.valueOf(product.getImportedDate()));
             int isInserted = pStatement.executeUpdate();
             pStatement.close();
             connection.close();

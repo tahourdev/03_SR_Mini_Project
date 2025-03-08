@@ -24,11 +24,24 @@ public class ProductController {
         view.displayAllProducts(list, controller);
     }
 
+    public void updateProduct(ProductController controller) {
+
+    }
+
     public void showProductById(int id){
         Product product = model.getProductById(id);
         if(product != null){
             view.displayPage(product);
         }else {
+            Utility.isNullObject();
+        }
+    }
+
+    public void showProductByName(String name){
+        Product product = model.getProductByName(name);
+        if(name != null){
+            view.displayPage(product);
+        } else {
             Utility.isNullObject();
         }
     }

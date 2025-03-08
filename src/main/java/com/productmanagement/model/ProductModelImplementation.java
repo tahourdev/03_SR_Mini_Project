@@ -15,6 +15,11 @@ public class ProductModelImplementation implements ProductModel {
     }
 
     @Override
+    public Product getProductByName(String name) {
+        return dao.findByName(name);
+    }
+
+    @Override
     public int getLatestId() {
         return dao.getTheLatestIndexID();
     }

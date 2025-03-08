@@ -72,9 +72,13 @@ public class ProductView {
                     String getId = Utility.validation("^\\s*\\d+$", "Please input id to get record : ", "Only positive number is accepted!!!");
                     controller.showProductById(Integer.parseInt(getId));
                 }
-                case "u" ->{}
+                case "u" ->{
+                }
                 case "d" ->{}
-                case "s" ->{}
+                case "s" ->{
+                    String getName = Utility.validation("^\\s*\\w*$", "Please input a name: ", "Only letters are accepted!!!");
+                    controller.showProductByName(getName);
+                }
                 case "se" ->{}
                 case "sa" ->{
                     System.out.println(Utility.GREEN + "'si' " + Utility.RESET_TEXT_COLOUR + "for saving insert products and " + Utility.GREEN + "'su' " + Utility.RESET_TEXT_COLOUR + "for saving update products or " + Utility.RED + "'b' " + Utility.RESET_TEXT_COLOUR + "for back to menu.");
@@ -89,12 +93,8 @@ public class ProductView {
 
                             }
                         }
-                        case "su" ->{
-
-                        }
-                        case "b" ->{
-
-                        }
+                        case "su" ->{}
+                        case "b" ->{}
                     }
                 }
                 case "un" ->{
@@ -111,9 +111,7 @@ public class ProductView {
                         case "uu" ->{
 
                         }
-                        case "b" ->{
-
-                        }
+                        case "b" ->{}
                     }
                 }
                 case "ba" ->{}

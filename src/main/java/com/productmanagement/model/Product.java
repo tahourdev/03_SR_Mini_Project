@@ -45,7 +45,7 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public Date getImportedDate() {
+    public LocalDate getImportedDate() {
         return importedDate;
     }
 
