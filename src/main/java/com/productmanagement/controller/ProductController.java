@@ -37,5 +37,9 @@ public class ProductController {
         return model.getLatestId() + 1;
     }
 
-
+    public void saveProduct(List<Product> list) {
+        list.forEach(product -> {
+            model.addProduct(product);
+        });
+    }
 }

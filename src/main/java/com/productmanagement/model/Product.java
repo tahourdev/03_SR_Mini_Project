@@ -45,13 +45,9 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public Date getImportedDate() {
-        return importedDate;
-    }
+    public LocalDate getImportedDate() {return importedDate;}
 
-    public void setImportedDate() {
-        this.importedDate = importedDate;
-    }
+    public void setImportedDate() {this.importedDate = importedDate;}
 
     @Override
     public String toString() {

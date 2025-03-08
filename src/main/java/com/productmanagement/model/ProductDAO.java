@@ -1,5 +1,7 @@
 package com.productmanagement.model;
 
+import com.productmanagement.view.Utility;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +78,7 @@ public class ProductDAO {
         return 0;
     }
 
-    public int addProduct(Product product){
+    public void addProduct(Product product){
         try{
             connection = DriverManager.getConnection(url, user, password);
             String sql = "INSERT INTO products (name, unit_price, quantity, imported_date) VALUES (?, ?, ?, ?)";
@@ -84,14 +86,15 @@ public class ProductDAO {
             pStatement.setString(1, product.getName());
             pStatement.setDouble(2, product.getUnitPrice());
             pStatement.setInt(3, product.getQuantity());
-            pStatement.setDate(4, product.getImportedDate());
+            pStatement.setDate(4, Date.valueOf(product.getImportedDate()));
             int isInserted = pStatement.executeUpdate();
+            if(isInserted != 0){
+                System.out.println(Utility.CHECK_MARK + Utility.GREEN +" Product with ID: " + product.getId() + " was added to the database successfully!!!" + Utility.RESET_TEXT_COLOUR);
+            }
             pStatement.close();
             connection.close();
-            return isInserted;
         }catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return 0;
     }
 }

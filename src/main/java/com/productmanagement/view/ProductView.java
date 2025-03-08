@@ -86,7 +86,9 @@ public class ProductView {
                                 System.out.print(Utility.YELLOW + "Press Enter to Continue..." + Utility.RESET_TEXT_COLOUR);
                                 Utility.scanner.nextLine();
                             }else {
-
+                                controller.saveProduct(writeProductsList);
+                                writeProductsList.clear();
+                                controller.showAll(controller);
                             }
                         }
                         case "su" ->{
