@@ -1,5 +1,9 @@
 package com.productmanagement.model;
 
-public interface ProductModel {
+import java.util.List;
 
+public interface ProductModel {
+    List<Product> getProductsFromDatabase();
+    Product getProductById(int id);
+    int getLatestId();
 }

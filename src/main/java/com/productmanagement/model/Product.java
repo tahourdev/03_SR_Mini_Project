@@ -51,4 +51,15 @@ public class Product {
     public void setImportedDate(LocalDate importedDate) {
         this.importedDate = importedDate;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", unitPrice=" + unitPrice +
+                ", quantity=" + quantity +
+                ", importedDate=" + importedDate +
+                '}';
+    }
 }

@@ -1,61 +1,78 @@
 package com.productmanagement.model;
 
-import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
+
 
 public class ProductDAO {
-    private Connection conn;
-
-    public ProductDAO() throws SQLException {
-        Properties props = new Properties();
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties")) {
-            if (input == null) {
-                throw new SQLException("Unable to find db.properties in resources");
-            }
-            props.load(input);
-            String url = props.getProperty("db.url");
-            String user = props.getProperty("db.user");
-            String password = props.getProperty("db.password");
-            conn = DriverManager.getConnection(url, user, password);
-        } catch (Exception e) {
-            throw new SQLException("Failed to connect to database: " + e.getMessage(), e);
-        }
+    private Connection connection;
+    private final String url = "jdbc:postgresql://localhost:5432/stock_db";
+    private final String user = "postgres";
+    private final String password = "270540";
+    public ProductDAO() {
+        connection = null;
     }
-
-    // Getter for the connection (if needed by other methods)
-    public Connection getConnection() {
-        return conn;
-    }
-
-    // Fetch products with pagination
-    public List<Product> getProducts(int page, int rowsPerPage) throws SQLException {
+    public List<Product> getAllProducts(){
         List<Product> products = new ArrayList<>();
-        int offset = (page - 1) * rowsPerPage;
-        String sql = "SELECT * FROM products ORDER BY id LIMIT ? OFFSET ?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, rowsPerPage);
-        stmt.setInt(2, offset);
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
-            products.add(new Product(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getDouble("unit_price"),
-                    rs.getInt("quantity"),
-                    rs.getDate("imported_date").toLocalDate()
-            ));
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from products");
+            while (resultSet.next()) {
+                products.add(new Product(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDouble("unit_price"),
+                        resultSet.getInt("quantity"),
+                        resultSet.getDate("imported_date").toLocalDate()
+                ));
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());;
         }
         return products;
     }
 
-    // Get total number of products for pagination
-    public int getTotalProducts() throws SQLException {
-        String sql = "SELECT COUNT(*) FROM products";
-        ResultSet rs = conn.createStatement().executeQuery(sql);
-        rs.next();
-        return rs.getInt(1);
+    public Product findById(int id){
+        String query = "select * from products where id = ?";
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            PreparedStatement pStatement = connection.prepareStatement(query);
+            pStatement.setInt(1, id);
+            ResultSet resultSet = pStatement.executeQuery();
+            if(resultSet.next()){
+                return new Product(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDouble("unit_price"),
+                        resultSet.getInt("quantity"),
+                        resultSet.getDate("imported_date").toLocalDate()
+                );
+            }
+            resultSet.close();
+            pStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+    public int getTheLatestIndexID(){
+        try{
+            connection = DriverManager.getConnection(url, user, password);
+            ResultSet resultSet = connection.createStatement().executeQuery("SELECT last_value FROM products_id_seq");
+            if(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+            resultSet.close();
+            connection.close();
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
     }
 }
