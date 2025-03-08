@@ -16,10 +16,39 @@ public class Product {
         this.importedDate = importedDate;
     }
 
-    // Getters
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public double getUnitPrice() { return unitPrice; }
-    public int getQuantity() { return quantity; }
-    public LocalDate getImportedDate() { return importedDate; }
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public LocalDate getImportedDate() {
+        return importedDate;
+    }
+
+    public void setImportedDate(LocalDate importedDate) {
+        this.importedDate = importedDate;
+    }
 }

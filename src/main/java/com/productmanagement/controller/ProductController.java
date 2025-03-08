@@ -1,6 +1,6 @@
 package com.productmanagement.controller;
 
-import com.productmanagement.dao.ProductDAO;
+import com.productmanagement.model.ProductDAO;
 import com.productmanagement.model.Product;
 import com.productmanagement.view.ProductView;
 

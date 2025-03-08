@@ -1,6 +1,4 @@
-package com.productmanagement.dao;
-
-import com.productmanagement.model.Product;
+package com.productmanagement.model;
 
 import java.io.InputStream;
 import java.sql.*;
