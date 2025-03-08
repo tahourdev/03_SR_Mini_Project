@@ -7,5 +7,6 @@ public interface ProductModel {
     Product getProductById(int id);
     List<Product>  getProductByName(String name);
     int getLatestId();
+    void deleteProductById(int id);
     int addProduct(Product product);
 }

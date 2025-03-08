@@ -75,7 +75,6 @@ public class ProductView {
                     controller.showProductById(Integer.parseInt(getId));
                 }
                 case "u" ->{}
-                case "d" ->{}
                 case "se" ->{
                     System.out.print("Please input number row per page: ");
                     pageSize = Integer.parseInt(Utility.scanner.nextLine());
@@ -124,6 +123,20 @@ public class ProductView {
                         case "b" ->{
 
                         }
+                    }
+                }
+                case "d" ->{
+                    String getId = Utility.validation("^\\s*\\d+$", "Please input id to delete : ", "Only positive number is accepted!!!");
+                    controller.showProductById(Integer.parseInt(getId));
+                    System.out.print("Are you sure you want to delete product id "+ getId+ " ? (y/n): ");
+                    String option = Utility.scanner.nextLine();
+
+                    if(option.equals("y") ){
+                        System.out.println("Delete successfully!");
+                        controller.deleteProductById(Integer.parseInt(getId));
+                        controller.showAll(controller);
+                    }else if(option.equals("n")){
+                        System.out.println("No record was deleted!");
                     }
                 }
                 case "ba" ->{}

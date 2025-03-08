@@ -50,5 +50,11 @@ public class ProductController {
         return model.getLatestId() + 1;
     }
 
+   public void deleteProductById(int id){
+        model.deleteProductById(id);
+    }
+
+
+
 
 }

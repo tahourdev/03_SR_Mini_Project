@@ -1,5 +1,7 @@
 package com.productmanagement.model;
 
+import org.postgresql.util.PSQLException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +11,11 @@ public class ProductDAO {
     private Connection connection;
     private final String url = "jdbc:postgresql://localhost:5432/stock_db";
     private final String user = "postgres";
-    private final String password = "@Thavornn122";
+    private final String password = "270540";
     public ProductDAO() {
         connection = null;
     }
+
     public List<Product> getAllProducts(){
         List<Product> products = new ArrayList<>();
         try{
@@ -122,5 +125,19 @@ public class ProductDAO {
             System.out.println(e.getMessage());
         }
         return 0;
+    }
+
+    public void deleteProduct(int id){
+
+        String sql = "DELETE FROM products WHERE id = ?";
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            connection.close();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
