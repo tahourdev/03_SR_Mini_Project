@@ -15,7 +15,7 @@ public class ProductModelImplementation implements ProductModel {
     }
 
     @Override
-    public Product getProductByName(String name) {
+    public List<Product>  getProductByName(String name) {
         return dao.findByName(name);
     }
 

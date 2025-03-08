@@ -38,9 +38,9 @@ public class ProductController {
     }
 
     public void showProductByName(String name){
-        Product product = model.getProductByName(name);
+        List<Product> product = model.getProductByName(name);
         if(name != null){
-            view.displayPage(product);
+            view.displayListProducts(product);
         } else {
             Utility.isNullObject();
         }

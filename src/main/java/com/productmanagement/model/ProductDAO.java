@@ -62,22 +62,23 @@ public class ProductDAO {
         return null;
     }
 
-    public Product findByName(String name){
+    public List<Product>  findByName(String name){
         String query = "select * from products where name ilike ?";
+        List<Product> products = new ArrayList<>();
         try{
             connection = DriverManager.getConnection(url, user, password);
             PreparedStatement pStatement = connection.prepareStatement(query);
             pStatement.setString(1, name.trim() + "%"); // Enable partial matching
             ResultSet resultSet = pStatement.executeQuery();
 
-            if (resultSet.next()) {
-                return new Product(
+            while (resultSet.next()) {
+                products.add(new Product(
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getDouble("unit_price"),
                         resultSet.getInt("quantity"),
                         resultSet.getDate("imported_date").toLocalDate()
-                );
+                ));
             }
             resultSet.close();
             pStatement.close();
@@ -85,7 +86,7 @@ public class ProductDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return products;
     }
 
 
