@@ -65,8 +65,20 @@ public class ProductView {
                 case "se" ->{}
                 case "sa" ->{}
                 case "un" ->{}
-                case "ba" ->{}
-                case "re" ->{}
+                case "ba" ->{
+                    String backupResult = controller.backUpFile();
+                    System.out.println(backupResult);
+                }
+                case "re" ->{
+                    System.out.println("\nList of Data backup : ");
+                    String[] backups = controller.listBackups();
+                    for (String backup : backups) {
+                        System.out.println(backup);
+                    }
+                    System.out.print("=> Enter backup id to restore : ");
+                    int backupId = Integer.parseInt(Utility.scanner.nextLine());
+                    controller.restoreDatabase(backupId);
+                }
             }
         }
     }

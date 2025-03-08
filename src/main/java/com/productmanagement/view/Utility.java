@@ -6,6 +6,7 @@ import org.nocrala.tools.texttablefmt.CellStyle;
 import org.nocrala.tools.texttablefmt.ShownBorders;
 import org.nocrala.tools.texttablefmt.Table;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class Utility {
@@ -110,5 +111,26 @@ public class Utility {
         System.out.println(table.render());
         System.out.print(YELLOW + "Press Enter to Continue..." + RESET_TEXT_COLOUR);
         scanner.nextLine();
+    }
+    public int countBackups(){
+        File backupDir = new File("src/main/java/database/");
+        if (!backupDir.exists()) {
+            try {
+                if (!backupDir.mkdirs()) {
+                    System.err.println("Failed to create backup directory: " + backupDir);
+                    return 0;
+                }
+            } catch (SecurityException e) {
+                System.err.println("Security exception creating backup directory: " + e.getMessage());
+                return 0;
+            }
+        }
+
+        File[] backups = backupDir.listFiles((dir, name) -> name.endsWith(".sql"));
+        if (backups == null) {
+            System.err.println("Unable to access backup directory: " + backupDir);
+            return 0;
+        }
+        return backups.length;
     }
 }
